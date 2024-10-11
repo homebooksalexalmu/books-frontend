@@ -1,27 +1,22 @@
-import LoginButton from "./components/auth/LoginButton";
-import LogoutButton from "./components/auth/LogoutButton";
-import Image from "next/image";
-import { getSession } from "@auth0/nextjs-auth0";
+"use client"
+import { useEffect, useState } from "react";
+import CardBook from "./components/Books/CardBook";
 
-export default async function Home() {
-  const session = await getSession();
+export default function Home() {
+  const [reads, setReads] = useState<any>([]);
 
-  if (!session) return <p>No hay sesion</p>;
-
-  const { user } = session;
+  useEffect(() => {
+    const fetchReads = async () => {
+      const res = await fetch("https://books-back-alpha.vercel.app/api/reads");
+      const data = await res.json();
+      setReads([...data, ...data, ...data, ...data, ...data, ...data]);
+    }
+    fetchReads();
+  }, []);
 
   return (
-    <div className="w-full h-screen flex flex-col gap-4 justify-center items-center">
-      {user ? (
-        <>
-          <div className="flex flex-col justify-center items-center gap-9">
-            <h1 className="text-4xl">{user.name} <small>{user.email_verified === true ? "✅" : "❌"}</small></h1>
-            <Image src={user.picture ?? ""} alt={user.nickname ?? ""} width={150} height={150} className="rounded-full" />
-            <p>{session.idToken}</p>
-          </div>
-          <LogoutButton />
-        </>
-      ) : (<LoginButton />)}
+    <div className="w-full h-screen grid grid-cols-2 md:grid-cols-5 gap-2 md:gap-6 py-4 px-2 md:px-5">
+      {reads.map((read: any) => (<CardBook key={read._id} read={read} />))}
     </div>
   );
 }
