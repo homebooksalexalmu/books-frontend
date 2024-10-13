@@ -1,9 +1,9 @@
 import { getBookReadByIsbn } from "@/app/lib/reads";
-import Image from "next/image";
 import { Button, Chip } from "@nextui-org/react";
 import BookPageUsersTabs from "@/app/components/Books/ReadsUserTabs";
 import BookDataTable from "@/app/components/Books/BookDataTable";
 import Link from "next/link";
+import BookImage from "@/app/components/Books/BookImage";
 
 
 const BookPage = async ({ params }: { params: { isbn: string } }) => {
@@ -19,11 +19,9 @@ const BookPage = async ({ params }: { params: { isbn: string } }) => {
                     </Button>
                 </Link>
             </div>
-            <div className="w-full flex flex-row justify-start items-start">
-                <div className="w-4/12 px-4">
-                    <Image src={book.portrait} alt={book.title} width={400} height={310} />
-                </div>
-                <div className="w-8/12 px-4 flex flex-col justify-start items-start gap-3">
+            <div className="w-full flex flex-col md:flex-row justify-start items-start">
+                <BookImage book={book} />
+                <div className="w-full md:w-8/12 px-4 flex flex-col justify-start items-start gap-3">
                     <h1 className="text-3xl">{book.title}</h1>
                     <p className="text-md">{book.isbn}</p>
                     <p className="text-tiny">{book.authors.map((author: string) => author.toUpperCase()).join(", ")}</p>
