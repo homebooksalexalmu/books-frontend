@@ -1,12 +1,12 @@
 
 
 export enum BookReadsStatus {
-    INACTIVE = "INACTIVE",
-    PENDING_TO_BUY = "PENDING_TO_BUY",
-    PENDING_TO_READ = "PENDING_TO_READ",
-    IN_PROGRESS = "IN_PROGRESS",
+    COMPLETE = "COMPLETE",
     INCOMPLETE = "INCOMPLETE",
-    COMPLETE = "COMPLETE"
+    IN_PROGRESS = "IN_PROGRESS",
+    PENDING_TO_READ = "PENDING_TO_READ",
+    PENDING_TO_BUY = "PENDING_TO_BUY",
+    INACTIVE = "INACTIVE",
 }
 
 export const getColorsByStatus = (status: string) => {

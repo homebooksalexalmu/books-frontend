@@ -1,4 +1,4 @@
-import { getBookByIsbn } from "@/app/lib/books";
+import { getBookReadByIsbn } from "@/app/lib/books";
 import Image from "next/image";
 import { Button, Chip } from "@nextui-org/react";
 import BookPageUsersTabs from "@/app/components/Books/ReadsUserTabs";
@@ -7,7 +7,7 @@ import Link from "next/link";
 
 
 const BookPage = async ({ params }: { params: { isbn: string } }) => {
-    const [book] = await getBookByIsbn(params.isbn);
+    const [book] = await getBookReadByIsbn(params.isbn);
 
     return (
         <div className="w-full min-h-screen h-auto px-3 py-1">

@@ -23,7 +23,7 @@ const DesktopLayout = ({ children }: { children: ReactNode }) => {
                 <Link className="text-white" href="/search">Buscar</Link>
             </aside>
             <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden z-40 bg-white">
-                <header className="sticky top-0 z-999 px-3 flex flex-row justify-end items-center w-full h-16 bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none border-b-1">
+                <header className="sticky top-0 z-999 px-3 flex flex-row justify-end items-center w-full h-16 bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none border-b-1 py-3">
                     <Dropdown>
                         <DropdownTrigger>
                             <User
