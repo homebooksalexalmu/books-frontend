@@ -10,9 +10,15 @@
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^3.5.0",
+    "@nextui-org/react": "^2.4.8",
+    "axios": "^1.7.7",
+    "date-fns": "^4.1.0",
+    "formik": "^2.4.6",
+    "framer-motion": "^11.11.1",
     "next": "14.2.13",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-qr-barcode-scanner": "^2.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",

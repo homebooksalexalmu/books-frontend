@@ -1,6 +1,8 @@
 "use client";
 import { useUser, } from "@auth0/nextjs-auth0/client"
+import { User } from "@nextui-org/react";
 import { useEffect } from "react";
+import LoadingPage from "../components/LoadingPage";
 
 const PublicRoute = () => {
     const { user, isLoading } = useUser();
@@ -13,11 +15,17 @@ const PublicRoute = () => {
         });
     }, []);
 
-    if (isLoading) return <p>Loading...</p>
+    if (isLoading) return <LoadingPage />
 
     return (
         <div className="w-full h-screen flex flex-col gap-4 justify-center items-center">
-            <div className="w-2/4"><pre><code>{JSON.stringify(user, null, 2)}</code></pre></div>
+            <User
+                name={user?.name}
+                description={user?.nickname}
+                avatarProps={{
+                    src: user?.picture ?? ""
+                }}
+            />
         </div>
     )
 }
