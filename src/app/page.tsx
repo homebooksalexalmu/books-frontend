@@ -7,9 +7,9 @@ export default function Home() {
 
   useEffect(() => {
     const fetchReads = async () => {
-      const res = await fetch("https://books-back-alpha.vercel.app/api/reads");
+      const res = await fetch(`http://localhost:3000/api/reads`);
       const data = await res.json();
-      setReads([...data, ...data, ...data, ...data, ...data, ...data]);
+      setReads(data);
     }
     fetchReads();
   }, []);

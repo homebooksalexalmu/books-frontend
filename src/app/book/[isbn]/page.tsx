@@ -1,4 +1,4 @@
-import { getBookReadByIsbn } from "@/app/lib/books";
+import { getBookReadByIsbn } from "@/app/lib/reads";
 import Image from "next/image";
 import { Button, Chip } from "@nextui-org/react";
 import BookPageUsersTabs from "@/app/components/Books/ReadsUserTabs";

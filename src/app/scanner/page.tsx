@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import BarcodeScannerComponent from "react-qr-barcode-scanner";
-import { getBookByIsbn, getBookReadByIsbn } from "../lib/books";
+import { getBookByIsbn } from "../lib/books";
+import { getBookReadByIsbn } from "../lib/reads";
 import { getCategories } from "../lib/categories";
 
 import AddReadModal from "../components/Books/Modal/AddReadModal";
