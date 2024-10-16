@@ -1,9 +1,11 @@
-
+import { Button } from "@nextui-org/react";
 import Link from "next/link";
 
 const LogoutButton = () => (
     <Link href="/api/auth/logout">
-        Cerrar sesión
+        <Button className="bg-purple-800 text-white">
+            Cerrar Sesión
+        </Button>
     </Link>
 );
 

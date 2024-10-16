@@ -3,6 +3,7 @@ import { useUser, } from "@auth0/nextjs-auth0/client"
 import { User } from "@nextui-org/react";
 import { useEffect } from "react";
 import LoadingPage from "../components/LoadingPage";
+import LogoutButton from "../components/auth/LogoutButton";
 
 const PublicRoute = () => {
     const { user, isLoading } = useUser();
@@ -26,6 +27,7 @@ const PublicRoute = () => {
                     src: user?.picture ?? ""
                 }}
             />
+            <LogoutButton />
         </div>
     )
 }
