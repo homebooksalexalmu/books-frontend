@@ -6,6 +6,7 @@ import { getBookReadByIsbn } from "../lib/reads";
 import { getCategories } from "../lib/categories";
 
 import AddReadModal from "../components/Books/Modal/AddReadModal";
+import { CircularProgress } from "@nextui-org/react";
 
 const ScannerPage = () => {
     const [isbn, setIsbn] = useState<string>("");
@@ -13,22 +14,29 @@ const ScannerPage = () => {
     const [book, setBook] = useState<any>();
     const [categories, setCategories] = useState<any>();
     const [open, setOpen] = useState<boolean>(false);
+    const [isFetching, setIsFetching] = useState<boolean>(false);
 
     useEffect(() => {
         if (isbn && isbn.length) {
+            setIsFetching(true);
             getCategories().then(res => setCategories(res));
 
             getBookReadByIsbn(isbn).then(res => {
                 if (res[0]) {
                     setBook(res[0]);
                     setOpen(true);
+                    setIsFetching(false);
                 }
                 if (!res || !res.length) {
                     getBookByIsbn(isbn).then(res => {
                         setBook(res);
                         setOpen(true);
+                        setIsFetching(false);
                     });
                 }
+            }).catch(err => {
+                console.error(err);
+                resetScannerPage();
             });
         }
     }, [isbn]);
@@ -50,12 +58,11 @@ const ScannerPage = () => {
                         setOpenScanner(false);
                     }
                     else setIsbn("");
-                }} />) : <div>
-                    <p>{isbn}</p>
-                    <pre>
-                        <code>{JSON.stringify(book, null, 2)}</code>
-                    </pre>
-                </div>
+                }} />) : isFetching ?
+                    <div className="w-full h-[90vh] flex flex-col justify-center items-center">
+                        <CircularProgress />
+                    </div>
+                    : null
             }
             <AddReadModal book={book} open={open} categories={categories} handleClose={resetScannerPage} />
         </div>
