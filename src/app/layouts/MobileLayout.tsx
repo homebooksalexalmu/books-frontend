@@ -3,6 +3,7 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 import { Skeleton, User } from "@nextui-org/react";
 import Link from "next/link";
 import { ReactNode } from "react";
+import LogoutButton from "../components/auth/LogoutButton";
 
 const MobileLayout = ({ children }: { children: ReactNode }) => {
     const { user, isLoading } = useUser();
@@ -20,7 +21,7 @@ const MobileLayout = ({ children }: { children: ReactNode }) => {
     );
 
     return (
-        <div className="relative">
+        <div className="relative mb-20">
             <div className="w-full h-16 bg-purple-950 flex flex-row justify-between items-center text-white px-2">
                 <Link href="/">Inicio</Link>
                 <User avatarProps={{
@@ -37,6 +38,7 @@ const MobileLayout = ({ children }: { children: ReactNode }) => {
                     <Link href="/">
                         Libros
                     </Link>
+                    <LogoutButton />
                 </div>
             </div>
         </div>

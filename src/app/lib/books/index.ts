@@ -15,7 +15,12 @@ export const updateBookCategories = async (isbn: string, categories: Array<strin
         const response = await axios.patch(`https://books-back-alpha.vercel.app/api/books/${isbn}`, {
             categories
         });
-        return response.data;
+        if (response.status >= 200 && response.status < 300) {
+            return response.data;
+        }
+
+        throw new Error(response.data);
+
     } catch (error) {
         console.log(error);
         throw new Error(`Error updating book with ISBN <${isbn}>`);
