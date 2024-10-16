@@ -29,7 +29,7 @@ const MobileLayout = ({ children }: { children: ReactNode }) => {
             </div>
             {children}
 
-            <div className="w-full h-24 fixed bottom-0 left-0 right-0 flex flex-row justify-center items-center">
+            <div className="w-full h-24 fixed bottom-0 left-0 right-0 flex flex-row justify-center items-center z-[999]">
                 <div className="w-11/12 bg-purple-950 p-4 rounded-xl flex flex-row justify-around items-center text-white relative">
                     <Link href="/">
                         <i className="text-3xl fa-solid fa-book"></i>

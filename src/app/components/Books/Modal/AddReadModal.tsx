@@ -34,7 +34,7 @@ const AddReadModal = ({ open, book, categories, handleClose }: { book: any; open
 
     const isRead = () => book.userReads && Array.isArray(book.userReads);
     return (
-        <Modal hideCloseButton isOpen={open === true && book} className="max-h-[95vh]">
+        <Modal hideCloseButton isOpen={open === true && book} className="max-h-[95vh] pb-24 z-[9999]">
             <ModalContent className="max-h-[95vh] overflow-auto">
                 {(onClose) => (
                     <>
