@@ -6,6 +6,7 @@ import { getBookReadByIsbn } from "../lib/reads";
 import { getCategories } from "../lib/categories";
 import AddReadModal from "../components/Books/Modal/AddReadModal";
 import { Button, CircularProgress, Input } from "@nextui-org/react";
+import { toast } from "sonner";
 
 const ScannerPage = () => {
     const [isbn, setIsbn] = useState<string>("");
@@ -34,10 +35,15 @@ const ScannerPage = () => {
                         setOpen(true);
                         setIsFetching(false);
                         setOpenScanner(true);
+                    }).catch(err => {
+                        console.log(JSON.stringify(err));
+                        toast.error(err.response.data.message);
+                        resetScannerPage();
                     });
                 }
             }).catch(err => {
                 console.error(err);
+                toast.error(err.response.data.message);
                 resetScannerPage();
             });
         }
@@ -55,6 +61,7 @@ const ScannerPage = () => {
         setBook(undefined);
         setCategories(undefined);
         setOpen(false);
+        setIsFetching(false);
     }
 
     return (
