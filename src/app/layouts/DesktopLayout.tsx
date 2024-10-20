@@ -5,6 +5,7 @@ import { ReactNode } from "react";
 import LogoutButton from "../components/auth/LogoutButton";
 import Link from "next/link";
 import LoadingPage from "../components/LoadingPage";
+import { Aside } from "../components/Aside";
 
 const DesktopLayout = ({ children }: { children: ReactNode }) => {
     const { user, isLoading } = useUser();
@@ -19,9 +20,12 @@ const DesktopLayout = ({ children }: { children: ReactNode }) => {
                 <div className="w-full flex flex-row justify-center items-center py-7">
                     <h1 className="text-3xl text-white">Home Library</h1>
                 </div>
-                <p className="text-white">aside</p>
-                <Link className="text-white" href="/search">Buscar</Link>
-            </aside>
+                <Aside items={[
+                    { icon: <i className="fa-solid fa-book"></i>, key: "books", label: "Libros", link: "/" },
+                    { icon: <i className="fa-solid fa-magnifying-glass"></i>, key: "search", label: "Buscar", link: "/search" },
+                    { icon: <i className="fa-solid fa-user"></i>, key: "profile", label: "Perfil", link: "/profile" }
+                ]} />
+            </aside >
             <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden z-40 bg-white">
                 <header className="sticky top-0 z-999 px-3 flex flex-row justify-end items-center w-full h-16 bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none border-b-1 py-3">
                     <Dropdown>
@@ -55,7 +59,7 @@ const DesktopLayout = ({ children }: { children: ReactNode }) => {
                 </header>
                 {children}
             </div>
-        </div>
+        </div >
     )
 }
 

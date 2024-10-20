@@ -4,9 +4,9 @@ import Link from "next/link";
 const CardBook = ({ read }: { read: any }) => {
     const usersImage = read.userReads.map((userRead: any) => userRead.user.picture);
     return (
-        <Link href={`/book/${read.isbn}`}>
-            <Card className="col-span-12 sm:col-span-4 h-[300px] shadow-xl group overflow-hidden">
-                <CardHeader className="absolute transition-all ease-out delay-200 z-10 bottom-[-15px] flex-col !items-start h-0 group-hover:h-[60%] backdrop-blur-md group-hover:backdrop-blur-xl">
+        <Link href={`/book/${read.isbn}`} className="w-full">
+            <Card className="col-span-12 sm:col-span-4 w-full aspect-[9/14] shadow-xl group overflow-hidden">
+                <CardHeader className="absolute transition-all ease-out delay-200 z-10 bottom-[-15px] flex-col !items-start h-0 group-hover:h-[45%] lg:group-hover:h-[60%] backdrop-blur-md group-hover:backdrop-blur-xl">
                     <h4 className="text-white font-medium text-large line-clamp-3">{read.title}</h4>
                     {
                         usersImage ? (

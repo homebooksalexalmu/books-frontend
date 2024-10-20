@@ -34,7 +34,7 @@ const MobileLayout = ({ children }: { children: ReactNode }) => {
                     <Link href="/">
                         <i className="text-3xl fa-solid fa-book"></i>
                     </Link>
-                    <Link className="absolute -top-7  bg-purple-800 rounded-full p-4 flex flex-row justify-center items-center" href="/scanner">
+                    <Link className="absolute -top-7  bg-purple-800 rounded-full p-4 flex flex-row justify-center items-center" href="/search">
                         <i className="text-4xl fa-solid fa-barcode"></i>
                     </Link>
                     <Spacer />
