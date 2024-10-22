@@ -32,10 +32,11 @@ const AddReadModal = ({ open, book, categories, handleClose }: { book: any; open
         await createRead(readCreate);
     }
 
-    const isRead = () => book.userReads && Array.isArray(book.userReads);
+    const isRead = () => book && book.userReads && Array.isArray(book.userReads);
+    const isOwnRead = () => book && book.userReads?.some((read: any) => read.user.sub === user?.sub && read.status !== BookReadsStatus.INACTIVE);
     return (
-        <Modal hideCloseButton isOpen={open === true && book} className="max-h-[95vh] pb-24 z-[9999]">
-            <ModalContent className="max-h-[95vh] overflow-auto">
+        <Modal hideCloseButton isOpen={open === true && book} className="max-h-[95vh] pb-24 md:pb-0 z-[9999]">
+            <ModalContent className="h-auto max-h-[95vh] lg:max-h-max overflow-auto">
                 {(onClose) => (
                     <>
                         <form onSubmit={formik.handleSubmit} className="w-full">
@@ -43,8 +44,8 @@ const AddReadModal = ({ open, book, categories, handleClose }: { book: any; open
                             <ModalBody className="flex flex-col justify-center items-center">
                                 <Image src={book.portrait} alt={book._id} width={200} height={110} className="shadow-xl" />
                                 {
-                                    !isRead() ? (
-                                        <div className="w-full">
+                                    !isRead() || isRead() && !isOwnRead() ? (
+                                        <div className="w-full flex flex-col justify-center items-center gap-5">
                                             <Select
                                                 label="Elige un estado"
                                                 className="max-w-xs"
@@ -79,7 +80,7 @@ const AddReadModal = ({ open, book, categories, handleClose }: { book: any; open
                                 <Button color="danger" variant="light" onPress={handleClose}>
                                     Cerrar
                                 </Button>
-                                {!isRead() ? (
+                                {!isRead() || isRead() && !isOwnRead() ? (
                                     <Button color="primary" type="submit" onPress={onClose}>
                                         Guardar
                                     </Button>

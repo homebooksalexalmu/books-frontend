@@ -35,7 +35,6 @@ const ScannerPage = () => {
                         setIsFetching(false);
                         setOpenScanner(true);
                     }).catch(err => {
-                        console.log(JSON.stringify(err));
                         toast.error(err.response.data.message);
                         resetScannerPage();
                     });
