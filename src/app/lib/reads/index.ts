@@ -1,8 +1,7 @@
 import axios from "axios";
 
 export const createRead = async (readCreate: { user: string; book: string; status: string }) => {
-    console.log(JSON.stringify(readCreate))
-    const response = await axios.post(`https://books-back-alpha.vercel.app/api/reads`, readCreate);
+    const response = await axios.post(`/api/reads`, readCreate);
     if (response.status >= 200 && response.status < 300) {
         return response.data;
     }
