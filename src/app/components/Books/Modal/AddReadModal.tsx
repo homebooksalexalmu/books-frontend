@@ -19,7 +19,7 @@ const AddReadModal = ({ open, book, categories, handleClose }: { book: any; open
             if (!user || !user.sub) throw new Error("Cannot get user");
 
             if (values.categories) {
-                // await updateBookCategories(book._id, [values.categories].flat());
+                await updateBookCategories(book._id, [values.categories].flat());
             }
 
             await handleCreateRead({ ...values, book: book._id, user: user.sub })
