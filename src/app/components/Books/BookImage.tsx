@@ -15,7 +15,7 @@ const BookImage = ({ book }: { book: any }) => {
 
     return (
         <div className="w-full flex flex-row justify-center items-center">
-            <div className="w-9/12 px-4 mb-3 relative h-96">
+            <div className="w-9/12 px-4 mb-3 relative h-96 shadow-2xl">
                 <Image src={book.portrait} alt={book.title} fill className="w-10/12 aspect-[9/16]" />
             </div>
         </div>
