@@ -8,3 +8,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { isbn: stri
     await axios.patch(`https://books-back-alpha.vercel.app/api/books/${isbn}`, body);
     return NextResponse.json({ message: "Updated" });
 }
+
+export function GET() {
+    return NextResponse.json({ message: "Hello" });
+}
