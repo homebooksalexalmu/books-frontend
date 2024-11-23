@@ -13,13 +13,13 @@ const AddReadModal = ({ open, book, categories, handleClose }: { book: any; open
     const formik = useFormik({
         initialValues: {
             status: "",
-            categories: [""],
+            categories: "",
         },
         onSubmit: async (values) => {
             if (!user || !user.sub) throw new Error("Cannot get user");
-
+            const formattedCategories = values.categories.split(",");
             if (values.categories) {
-                await updateBookCategories(book._id, [values.categories].flat());
+                await updateBookCategories(book._id, formattedCategories);
             }
 
             await handleCreateRead({ ...values, book: book._id, user: user.sub })
