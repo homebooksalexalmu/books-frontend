@@ -35,13 +35,20 @@ const ScannerPage = () => {
                         setIsFetching(false);
                         setOpenScanner(true);
                     }).catch(err => {
-                        toast.error(err.response.data.message);
+                        if (err instanceof Error) {
+                            toast.error(err.message);
+                        } else {
+                            toast.error(err.response.data.message);
+                        }
                         resetScannerPage();
                     });
                 }
             }).catch(err => {
-                console.error(err);
-                toast.error(err.response.data.message);
+                if (err instanceof Error) {
+                    toast.error(err.message);
+                } else {
+                    toast.error(err.response.data.message);
+                }
                 resetScannerPage();
             });
         }
