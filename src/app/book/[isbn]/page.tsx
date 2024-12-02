@@ -13,7 +13,7 @@ const BookPage = async ({ params }: { params: { isbn: string } }) => {
     return (
         <div className="w-full min-h-screen h-auto px-3 py-1">
             <div className="w-full flex flex-row justify-end items-center p-3">
-                <Link href="#">
+                <Link href={`/book/${params.isbn}/edit`}>
                     <Button color="primary" variant="bordered" size="sm" className="flex flex-row items-center -z-10">
                         <i className="fa-solid fa-pencil"></i>
                         Editar
