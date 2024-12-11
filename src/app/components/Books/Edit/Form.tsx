@@ -34,6 +34,8 @@ const BookEditForm = ({ book }: { book: any }) => {
 
     const onSubmit: SubmitHandler<any> = async (data) => {
         try {
+            const pages = parseInt(data.pages, 10);
+            data.pages = isNaN(pages) ? 0 : pages;
             await updateBook(data._id, data);
             router.push("/");
         } catch (err: any) {
@@ -162,6 +164,28 @@ const BookEditForm = ({ book }: { book: any }) => {
                     {errors.publisher && (
                         <p className="text-red-500 text-sm mt-1">
                             {(errors as any).publisher.message}
+                        </p>
+                    )}
+                </div>
+
+                {/* Páginas */}
+                <div>
+                    <label
+                        htmlFor="pages"
+                        className="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                        Páginas
+                    </label>
+                    <Input
+                        id="pages"
+                        defaultValue={book.pages}
+                        className="w-full"
+                        type="number"
+                        {...register("pages")}
+                    />
+                    {errors.pages && (
+                        <p className="text-red-500 text-sm mt-1">
+                            {(errors as any).pages.message}
                         </p>
                     )}
                 </div>
