@@ -1,16 +1,17 @@
-import { DEFAULT_BOOK_PAGES, DEFAULT_COVER_IMAGE } from "@/app/utils";
-import { BookProps } from "@/backend/Books/infrastructure/database/Book.schema";
+import { DEFAULT_BOOK_PAGES } from "@/app/utils";
+import { Book } from "./Book";
+import { BookId } from "./BookIdVO";
+import { BookPortraitVO } from "./BookPortraitVO";
 
 export class BookFactory {
     constructor() { }
 
-    static async create(bookProps: any): Promise<Partial<BookProps>> {
-        const imageUrl = DEFAULT_COVER_IMAGE; // await this.cloudinaryService.transformAndUploadAsset(bookProps._id, bookProps.image)
-        return {
-            _id: bookProps._id,
+    static async create(bookProps: any, image: string): Promise<Book> {
+        return new Book({
+            _id: new BookId(bookProps._id),
             title: bookProps.title,
             description: bookProps.description,
-            portrait: imageUrl,
+            portrait: new BookPortraitVO(image),
             authors: bookProps.attributes.authors.map((author: string) =>
                 author.includes(",")
                     ? author.split(",").reverse().join(" ").trim()
@@ -21,6 +22,6 @@ export class BookFactory {
             format: bookProps.attributes.format,
             createdAt: new Date(),
             updatedAt: new Date()
-        }
+        })
     }
 }

@@ -3,13 +3,18 @@ import { Book } from "@/backend/Books/domain/Book";
 import { BookId } from "@/backend/Books/domain/BookIdVO";
 import { IBookRepository } from "@/backend/Books/domain/IBookRepository";
 import { BookHamelynFinder } from "./BookHamelynFinder";
+import { CloudinaryService } from "@/backend/shared/application/CloudinaryService";
+import { BookProps } from "../infrastructure/database/Book.schema";
+import { Types } from "mongoose";
 
 export class BookService  {
 
-    constructor(private readonly bookRepository: IBookRepository) { }
+    constructor(
+        private readonly bookRepository: IBookRepository,
+        private readonly cloudinaryService: CloudinaryService
+    ) { }
 
-    async create(bookProps: any): Promise<void> {
-        const book = Book.fromPrimitives(bookProps);
+    async create(book: Book): Promise<void> {
         await this.bookRepository.create(book);
     }
 
@@ -23,11 +28,19 @@ export class BookService  {
             return result;
         }
 
-        const hamelynFinder = new BookHamelynFinder();
+        const hamelynFinder = new BookHamelynFinder(this.cloudinaryService);
         const book = await hamelynFinder.find(isbn);
 
         await this.create(book);
-        return Book.fromPrimitives(book);
+        return book;
     }
+
+    async update(isbn: BookId, body: Partial<BookProps>): Promise<void> {
+        const authors = body.authors?.map((author: any) => author.value);
+        const categories = body.categories?.map((category) => new Types.ObjectId(String(category)));
+        const updatedBody = {...body, authors, categories};
+        console.log(updatedBody)
+        await this.bookRepository.update(isbn, updatedBody);
+    } 
 
 }

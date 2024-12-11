@@ -14,6 +14,6 @@ export interface IBookRepository {
     }: { filter?: RootFilterQuery<Book>; page?: number; limit?: number; sort?: any }): Promise<Book[]>;
     findByIsbn(isbn: BookId): Promise<Nullable<Book>>;
     updateCategories(isbn: BookId, categories: Array<string>): Promise<void>;
-    update(isbn: BookId, body: Partial<Book>): Promise<void>;
+    update(isbn: BookId, body: any): Promise<void>;
     updatePortrait(isbn: BookId, portrait: BookPortraitVO): Promise<void>;
 }
