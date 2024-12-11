@@ -8,7 +8,7 @@ import Rating from "@/app/components/Books/Rating";
 
 
 const BookPage = async ({ params }: { params: { isbn: string } }) => {
-    const [book] = await getBookReadByIsbn(params.isbn);
+    const book = await getBookReadByIsbn(params.isbn);
 
     return (
         <div className="w-full min-h-screen h-auto px-3 py-1">

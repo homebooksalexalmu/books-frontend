@@ -1,5 +1,7 @@
-import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
+import axios from "axios";
+import { bookFindOneController } from "@/backend/Books/infrastructure/dependencies";
+import { MongoClientFactory } from "@/backend/shared/infrastructure/MongoDbClient";
 
 export async function PUT(req: NextRequest, { params }: { params: { isbn: string } }) {
     try {
@@ -12,4 +14,9 @@ export async function PUT(req: NextRequest, { params }: { params: { isbn: string
         console.log(error)
         return NextResponse.json({ error: JSON.stringify(error) }, { status: 500 })
     }
+}
+
+export async function GET(req: NextRequest, { params }: { params: { isbn: string } }) {
+    await MongoClientFactory.createAndConnectClient();
+    return await bookFindOneController.run(params.isbn);
 }

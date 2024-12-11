@@ -1,7 +1,7 @@
 import axios from "axios"
 
 export const getBookByIsbn = async (isbn: string) => {
-    const response = await axios.get(`https://books-back-alpha.vercel.app/api/books/${isbn}`);
+    const response = await axios.get(`/api/books/${isbn}`);
 
     if (response.status === 504) {
         throw new Error("Se agotó el tiempo. Vuelva a intentarlo más tarde.")

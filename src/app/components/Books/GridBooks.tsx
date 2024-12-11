@@ -14,8 +14,9 @@ const fetchReads = async (params?: Record<string, any>) => {
         }
     }
 
-    const res = await fetch(`https://books-back-alpha.vercel.app/api/reads${searchParams.size ? `?${searchParams.toString()}` : ""}`);
-    return await res.json();
+    const res = await fetch(`/api/reads${searchParams.size ? `?${searchParams.toString()}` : ""}`);
+    const response = await res.json();
+    return response.reads;
 }
 
 const GridBooks = () => {

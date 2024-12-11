@@ -9,6 +9,11 @@ export const createRead = async (readCreate: { user: string; book: string; statu
 }
 
 export const getBookReadByIsbn = async (isbn: string) => {
-    const response = await axios.get(`https://books-back-alpha.vercel.app/api/reads/${isbn}`);
-    return response.data;
+    const endpoint = `/api/reads/${isbn}`;
+    console.log(endpoint)
+    const response = await axios.get(endpoint);
+    if (response.status >= 200 && response.status < 300) {
+        return response.data.book[0];
+    }
+    throw new Error(response.data.message);
 }
