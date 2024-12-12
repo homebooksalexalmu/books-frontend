@@ -1,5 +1,3 @@
-import { isNotUndefined } from "@/shared/utils";
-
 import { Criteria } from "./Criteria";
 import { Filter } from "./Filter";
 import { FilterField } from "./FilterField";
@@ -44,7 +42,7 @@ export class CriteriaFactory {
                 new FilterOperator(operator),
                 new FilterValue(value)
             );
-        }).filter(isNotUndefined);
+        }).filter(filter => filter !== undefined);
 
         const filters = new Filters(filtersBase);
         const limit = input.limit ?? 10;
