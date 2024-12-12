@@ -23,8 +23,6 @@ const ScannerPage = () => {
             getCategories().then(res => setCategories(res));
 
             getBookReadByIsbn(isbn).then(res => {
-                console.log(res)
-                debugger;
                 if (res) {
                     setBook(res[0]);
                     setOpen(true);
