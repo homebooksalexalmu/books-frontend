@@ -1,4 +1,3 @@
-import { RatingProps } from "@/backend/Ratings/infrastructure/database/Rating.schema";
 import { Rating } from "./Rating";
 import { RatingId } from "./RatingId";
 import { BookId } from "@/backend/Books/domain/BookIdVO";

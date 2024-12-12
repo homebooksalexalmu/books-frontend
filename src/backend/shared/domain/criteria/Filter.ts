@@ -1,4 +1,4 @@
-import { InvalidArgumentException } from "../errors/InvalidArgumentException";
+import { InvalidArgumentException } from "@/backend/shared/domain/Errors/InvalidArgumentException";
 import { FilterField } from "./FilterField";
 import { FilterOperator } from "./FilterOperator";
 import { FilterValue } from "./FilterValue";

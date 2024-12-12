@@ -5,7 +5,6 @@ import { UserNotFoundException } from "@/backend/Users/domain/UserNotFoundExcept
 import { NextRequest, NextResponse } from "next/server";
 import { RatingFinderService } from "@/backend/Ratings/application/RatingFinder";
 import { RatingCreatorService } from "@/backend/Ratings/application/RatingCreator";
-import { RatingFactory } from "../../domain/RatingFactory";
 import { Types } from "mongoose";
 import { RatingUpdaterService } from "../../application/RatingUpdater";
 
