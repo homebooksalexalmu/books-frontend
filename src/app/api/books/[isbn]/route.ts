@@ -6,8 +6,7 @@ export async function PUT(req: NextRequest, { params }: { params: { isbn: string
         const body = await req.json();
         const { isbn } = params;
         await MongoClientFactory.createAndConnectClient();
-        return await bookPutController.run(isbn, body.newBook);
-        
+        return await bookPutController.run(isbn, body.newBook);       
 }
 
 export async function GET(req: NextRequest, { params }: { params: { isbn: string } }) {

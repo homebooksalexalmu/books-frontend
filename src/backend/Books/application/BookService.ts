@@ -6,6 +6,7 @@ import { BookHamelynFinder } from "./BookHamelynFinder";
 import { CloudinaryService } from "@/backend/shared/application/CloudinaryService";
 import { BookProps } from "../infrastructure/database/Book.schema";
 import { Types } from "mongoose";
+import { BookPortraitVO } from "../domain/BookPortraitVO";
 
 export class BookService  {
 
@@ -39,8 +40,12 @@ export class BookService  {
         const authors = body.authors?.map((author: any) => author.value);
         const categories = body.categories?.map((category) => new Types.ObjectId(String(category)));
         const updatedBody = {...body, authors, categories};
-        console.log(updatedBody)
         await this.bookRepository.update(isbn, updatedBody);
-    } 
+    }
+
+    async updatePortrait(isbn: BookId, imageUrl: string): Promise<void> {
+        const bookPortrait = new BookPortraitVO(imageUrl);
+        await this.bookRepository.updatePortrait(isbn, bookPortrait);
+    }
 
 }

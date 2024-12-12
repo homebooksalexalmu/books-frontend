@@ -32,3 +32,22 @@ export const updateBook = async (isbn: string, newBook: any) => {
 
     return response.data;
 }
+
+export const updateBookPortrait = async (isbn: string, file: File | undefined) => {
+    if (!file) return;
+
+    try {
+        const data = new FormData();
+        data.set("file", file);
+
+        const response = await axios.put(`/api/books/${isbn}/portrait`, data);
+
+        if (response.status === 504) {
+            throw new Error("Se agotó el tiempo. Vuelva a intentarlo más tarde.")
+        }
+    
+        return response.data;
+    } catch (error: unknown) {
+        console.error(error);
+    }
+}

@@ -5,6 +5,7 @@ import BookDataTable from "@/app/components/Books/BookDataTable";
 import Link from "next/link";
 import BookImage from "@/app/components/Books/BookImage";
 import Rating from "@/app/components/Books/Rating";
+import PortraitModal from "@/app/components/Books/Modal/PortraitModal";
 
 
 const BookPage = async ({ params }: { params: { isbn: string } }) => {
@@ -12,7 +13,8 @@ const BookPage = async ({ params }: { params: { isbn: string } }) => {
 
     return (
         <div className="w-full min-h-screen h-auto px-3 py-1">
-            <div className="w-full flex flex-row justify-end items-center p-3">
+            <div className="w-full flex flex-row justify-between items-center p-3">
+                <PortraitModal isbn={params.isbn} />
                 <Link href={`/book/${params.isbn}/edit`}>
                     <Button color="primary" variant="bordered" size="sm" className="flex flex-row items-center -z-10">
                         <i className="fa-solid fa-pencil"></i>

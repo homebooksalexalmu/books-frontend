@@ -1,0 +1,77 @@
+"use client"
+import { useRef, useState } from "react";
+import { Button, Modal, ModalContent } from "@nextui-org/react";
+import { updateBookPortrait } from "@/app/lib/books";
+
+const PortraitModal = ({ isbn }: { isbn: string }) => {
+    const [open, setOpen] = useState<boolean>(false);
+    const [file, setFile] = useState<File>();
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0]
+        if (file) {
+            setFile(file);
+            const url = URL.createObjectURL(file)
+            setPreviewUrl(url)
+        }
+    }
+
+    const reset = () => {
+        setPreviewUrl(null);
+    }
+
+    const handleUpload = async () => {
+        await updateBookPortrait(isbn, file);
+    }
+    return (
+        <>
+            <Button onClick={() => { setOpen(prev => !prev) }} color="primary" variant="bordered" size="sm" className="flex flex-row items-center z-10 cursor-pointer">
+                <i className="fa-solid fa-image"></i>
+                Subir portada
+            </Button>
+            <Modal hideCloseButton isOpen={open === true} className="max-h-[95vh] pb-24 md:pb-0 z-[9999]">
+                <ModalContent className="h-auto max-h-[95vh] lg:max-h-max overflow-auto">
+                    {() => (
+                        <main className="p-4">
+                            {previewUrl ? <div className="w-full flex flex-row justify-center">
+                                <img className="w-1/2 aspect-[9/16]" src={previewUrl} alt="Preview" />
+                            </div> : (
+                                <label
+                                    className="bg-white text-gray-500 font-semibold text-base rounded max-w-md h-52 flex flex-col items-center justify-center cursor-pointer border-2 border-gray-300 border-dashed mx-auto font-[sans-serif]">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-11 mb-2 fill-gray-500" viewBox="0 0 32 32">
+                                        <path
+                                            d="M23.75 11.044a7.99 7.99 0 0 0-15.5-.009A8 8 0 0 0 9 27h3a1 1 0 0 0 0-2H9a6 6 0 0 1-.035-12 1.038 1.038 0 0 0 1.1-.854 5.991 5.991 0 0 1 11.862 0A1.08 1.08 0 0 0 23 13a6 6 0 0 1 0 12h-3a1 1 0 0 0 0 2h3a8 8 0 0 0 .75-15.956z"
+                                            data-original="#000000" />
+                                        <path
+                                            d="M20.293 19.707a1 1 0 0 0 1.414-1.414l-5-5a1 1 0 0 0-1.414 0l-5 5a1 1 0 0 0 1.414 1.414L15 16.414V29a1 1 0 0 0 2 0V16.414z"
+                                            data-original="#000000" />
+                                    </svg>
+                                    Upload file
+
+                                    <input
+                                        type="file"
+                                        id="uploadFile1"
+                                        accept="image/*"
+                                        onChange={handleFileChange}
+                                        ref={fileInputRef}
+                                        className="hidden"
+                                    />
+                                    <p className="text-xs font-medium text-gray-400 mt-2">PNG, JPG SVG, WEBP, and GIF are Allowed.</p>
+                                </label>
+                            )}
+                            <div className="w-full flex flex-row justify-end py-2 gap-2">
+                                <Button onClick={handleUpload}>Cambiar portada</Button>
+                                { previewUrl ? (<Button onClick={reset}>Resetear</Button>) : undefined }
+                                <Button onClick={() => { setOpen(prev => !prev) }}>Cerrar</Button>
+                            </div>
+                        </main>
+                    )}
+                </ModalContent>
+            </Modal>
+        </>
+    )
+}
+
+export default PortraitModal;
