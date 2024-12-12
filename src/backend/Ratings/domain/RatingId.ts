@@ -6,6 +6,7 @@ export class RatingId extends ValueObject<string> {
     ratingId: string;
 
     constructor(_ratingId: string) {
+        console.log({hola: _ratingId})
         super(_ratingId);
         this.ensureRatingIdIsValidObjectId(_ratingId);
         this.ratingId = _ratingId;
@@ -13,6 +14,8 @@ export class RatingId extends ValueObject<string> {
     
     private ensureRatingIdIsValidObjectId = (userId: string) => {
         if (!isValidObjectId(userId)) {
+            console.log("ERROR!")
+            console.log(userId)
             throw new InvalidArgumentException(`Invalid Argument: RatingId is not a valid ObjectId ${userId}`);
         }
     }

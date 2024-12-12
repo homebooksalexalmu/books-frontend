@@ -46,14 +46,15 @@ export class RatingPutController {
             if (existingRatingRatingWithUserAndIsbn) {
                 await this.ratingUpdater.updateRate(existingRatingRatingWithUserAndIsbn._id, rate);
             } else {
-                const rating = RatingFactory.create({
-                    _id: String(new Types.ObjectId()),
+                const ratingId = String(new Types.ObjectId());
+                const rating = {
+                    _id: ratingId,
                     user: String(user._id),
                     rate: rate,
                     isbn: isbn,
                     createdAt: new Date(),
                     updatedAt: new Date(),
-                });
+                };
                 await this.ratingCreator.create(rating);
             }
 
