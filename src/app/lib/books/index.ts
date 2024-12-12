@@ -1,13 +1,15 @@
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 
 export const getBookByIsbn = async (isbn: string) => {
-    const response = await axios.get(`/api/books/${isbn}`);
-
-    if (response.status === 504) {
-        throw new Error("Se agotó el tiempo. Vuelva a intentarlo más tarde.")
+    try {
+        const response = await axios.get(`/api/books/${isbn}`);
+        return response.data;
+    } catch (error) {
+        if (error instanceof AxiosError && error.status === 504) {
+            throw new Error("Se agotó el tiempo. Vuelva a intentarlo más tarde.");
+        }
+        throw new Error("Internal server error");
     }
-
-    return response.data;
 }
 
 export const updateBookCategories = async (isbn: string, categories: Array<string>) => {
@@ -45,7 +47,7 @@ export const updateBookPortrait = async (isbn: string, file: File | undefined) =
         if (response.status === 504) {
             throw new Error("Se agotó el tiempo. Vuelva a intentarlo más tarde.")
         }
-    
+
         return response.data;
     } catch (error: unknown) {
         console.error(error);
