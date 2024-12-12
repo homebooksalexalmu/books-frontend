@@ -41,6 +41,7 @@ const RatingForm = ({ isbn, setOpen }: { isbn: string, setOpen: Dispatch<SetStat
                 )}
             </fieldset>
             <Button type="submit">Votar</Button>
+            <Button onClick={() => { setOpen(prev => !prev); }} color="danger">Cerrar</Button>
         </form>
     );
 };
