@@ -1,3 +1,5 @@
+import { readFinderController } from "@/backend/Reads/infrastructure/dependencies";
+import { MongoClientFactory } from "@/backend/shared/infrastructure/MongoDbClient";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -10,4 +12,9 @@ export async function POST(req: NextRequest) {
         console.log(err);
         return NextResponse.json({ message: "Error" });
     }
+}
+
+export async function GET() {
+    await MongoClientFactory.createAndConnectClient();
+    return readFinderController.run();
 }

@@ -14,7 +14,7 @@ const BookEditPage = () => {
         const fetchProductData = async (isbn: string) => {
             setIsBookLoading(true);
             const book = await getBookByIsbn(isbn);
-            setBookData(book);
+            setBookData(book.book);
             setIsBookLoading(false);
         }
 

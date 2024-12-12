@@ -1,7 +1,7 @@
 import axios from "axios"
 
 export const getBookByIsbn = async (isbn: string) => {
-    const response = await axios.get(`https://books-back-alpha.vercel.app/api/books/${isbn}`);
+    const response = await axios.get(`/api/books/${isbn}`);
 
     if (response.status === 504) {
         throw new Error("Se agotó el tiempo. Vuelva a intentarlo más tarde.")
@@ -31,4 +31,23 @@ export const updateBook = async (isbn: string, newBook: any) => {
     }
 
     return response.data;
+}
+
+export const updateBookPortrait = async (isbn: string, file: File | undefined) => {
+    if (!file) return;
+
+    try {
+        const data = new FormData();
+        data.set("file", file);
+
+        const response = await axios.put(`/api/books/${isbn}/portrait`, data);
+
+        if (response.status === 504) {
+            throw new Error("Se agotó el tiempo. Vuelva a intentarlo más tarde.")
+        }
+    
+        return response.data;
+    } catch (error: unknown) {
+        console.error(error);
+    }
 }

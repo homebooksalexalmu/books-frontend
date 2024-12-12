@@ -1,16 +1,20 @@
 
 import { updateBook } from "@/app/lib/books";
 import { getCategories } from "@/app/lib/categories";
-import { Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
+import { Button, Input, Textarea } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm, SubmitHandler, useFieldArray } from "react-hook-form";
+import { toast } from "sonner";
 
 const BookEditForm = ({ book }: { book: any }) => {
+    const router = useRouter();
     const [categories, setCategories] = useState<Array<{ _id: string; name: string; }>>([]);
-    const { register, handleSubmit, control, setValue, formState: { errors } } = useForm<any>(
+    const { register, handleSubmit, control, formState: { errors } } = useForm<any>(
         {
             defaultValues: {
                 authors: book.authors.map((author: string) => ({ value: author })) || [],
+                categories: book.categories.map((category: any) => category) || [],
             },
         }
     );
@@ -29,12 +33,20 @@ const BookEditForm = ({ book }: { book: any }) => {
     }, []);
 
     const onSubmit: SubmitHandler<any> = async (data) => {
-        await updateBook(data._id, data);
+        try {
+            const pages = parseInt(data.pages, 10);
+            data.pages = isNaN(pages) ? 0 : pages;
+            await updateBook(data._id, data);
+            router.push("/");
+        } catch (err: any) {
+            console.error(err);
+            if (err instanceof Error) {
+                toast.error(err.message);
+            } else {
+                toast.error(err.response.data.message);
+            }
+        }
     };
-
-    const [selectedCategory, setSelectedCategory] = useState(
-        book.categories[0]?._id || ""
-    );
 
     return (
         <form
@@ -105,33 +117,30 @@ const BookEditForm = ({ book }: { book: any }) => {
                     )}
                 </div>
 
-                {/* Categoría */}
-                <div>
+                {/* Categorías */}
+                <div className="md:col-span-2">
                     <label
-                        htmlFor="category"
+                        htmlFor="categories"
                         className="block text-sm font-medium text-gray-700 mb-2"
                     >
-                        Categoría
+                        Categorías
                     </label>
-                    <Select
-                        id="category"
-                        selectedKeys={new Set([selectedCategory])}
-                        onChange={(value) => {
-                            const selected = Array.from(value as any).join("");
-                            setSelectedCategory(selected);
-                            setValue("category", selected);
-                        }}
-                        className="w-full"
-                    >
+                    <div className="grid grid-cols-2 gap-4">
                         {categories.map((category) => (
-                            <SelectItem key={category._id} value={category._id}>
-                                {category.name}
-                            </SelectItem>
+                            <label key={category._id} className="flex items-center space-x-2">
+                                <input
+                                    type="checkbox"
+                                    value={category._id}
+                                    {...register("categories")}
+                                    defaultChecked={book.categories.includes(category._id)}
+                                />
+                                <span>{category.name}</span>
+                            </label>
                         ))}
-                    </Select>
-                    {errors.category && (
+                    </div>
+                    {errors.categories && (
                         <p className="text-red-500 text-sm mt-1">
-                            {(errors as any).category.message}
+                            {(errors as any).categories.message}
                         </p>
                     )}
                 </div>
@@ -155,6 +164,28 @@ const BookEditForm = ({ book }: { book: any }) => {
                     {errors.publisher && (
                         <p className="text-red-500 text-sm mt-1">
                             {(errors as any).publisher.message}
+                        </p>
+                    )}
+                </div>
+
+                {/* Páginas */}
+                <div>
+                    <label
+                        htmlFor="pages"
+                        className="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                        Páginas
+                    </label>
+                    <Input
+                        id="pages"
+                        defaultValue={book.pages}
+                        className="w-full"
+                        type="number"
+                        {...register("pages")}
+                    />
+                    {errors.pages && (
+                        <p className="text-red-500 text-sm mt-1">
+                            {(errors as any).pages.message}
                         </p>
                     )}
                 </div>
@@ -208,7 +239,7 @@ const BookEditForm = ({ book }: { book: any }) => {
             >
                 Enviar
             </Button>
-        </form>
+        </form >
     );
 }
 
