@@ -24,6 +24,7 @@ const PortraitModal = ({ isbn }: { isbn: string }) => {
 
     const handleUpload = async () => {
         await updateBookPortrait(isbn, file);
+        setOpen(prev => !prev);
     }
     return (
         <>

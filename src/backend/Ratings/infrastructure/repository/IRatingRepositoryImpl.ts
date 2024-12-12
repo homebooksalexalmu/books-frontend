@@ -1,9 +1,9 @@
 import { BookId } from "@/backend/Books/domain/BookIdVO";
-import { Nullable } from "@/backend/shared/domain/utils";
 import { IRatingRepository } from "@/backend/Ratings/domain/IRatingRepository";
 import { Rating } from "@/backend/Ratings/domain/Rating";
 import { RatingModel } from "@/backend/shared/infrastructure/MongoDbClient";
 import { RatingFactory } from "@/backend/Ratings/domain/RatingFactory";
+import { RatingId } from "../../domain/RatingId";
 
 export class IRatingRepositoryImpl implements IRatingRepository {
 
@@ -20,9 +20,12 @@ export class IRatingRepositoryImpl implements IRatingRepository {
         return docs.map(doc => RatingFactory.create(doc));
     }
 
-    async findByIsbn(isbn: BookId): Promise<Nullable<Rating>> {
-        const doc = await RatingModel.findOne({_id: isbn.value});
-        return RatingFactory.create(doc);
+    async findByIsbn(isbn: BookId): Promise<Array<Rating>> {
+        const docs = await RatingModel.find({isbn: isbn.value});
+        return docs.map(doc => Rating.fromPrimitives(doc));
     }
 
+    async update(ratingId: RatingId, rate: number): Promise<void> {
+        await RatingModel.updateOne({ _id: ratingId }, { $set: { rate } });
+    }
 }

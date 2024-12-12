@@ -6,7 +6,7 @@ import { RatingRate } from "./RatingRateVO";
 import { UserId } from "@/backend/Users/domain/UserId";
 
 export class RatingFactory {
-    static create(props: RatingProps) {
+    static create(props: any) {
         return new Rating({
             _id: new RatingId(props._id),
             isbn: new BookId(props.isbn),
