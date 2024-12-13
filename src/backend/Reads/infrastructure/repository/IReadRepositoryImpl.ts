@@ -4,6 +4,7 @@ import { Types } from "mongoose";
 import { ReadModel } from "@/backend/shared/infrastructure/MongoDbClient";
 import { Nullable } from "@/backend/shared/domain/utils";
 import { BookId } from "@/backend/Books/domain/BookIdVO";
+import { ReadBookStatusVO } from "../../domain/ReadBookStatus";
 
 export class IReadRepositoryImpl implements IReadRepository {
 
@@ -168,6 +169,10 @@ export class IReadRepositoryImpl implements IReadRepository {
                 }
             }
         ]);
+    }
+
+    async update(isbn: BookId, status: ReadBookStatusVO): Promise<void> {
+        await ReadModel.updateOne({ book: isbn.value }, { $set: { status: status.value } });
     }
 
 }

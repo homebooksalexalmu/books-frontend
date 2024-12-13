@@ -5,7 +5,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { useForm } from 'react-hook-form';
 
 const RatingForm = ({ isbn, setOpen }: { isbn: string, setOpen: Dispatch<SetStateAction<boolean>> }) => {
-    const {user, isLoading} = useUser();
+    const { user, isLoading } = useUser();
     const {
         register,
         handleSubmit,
@@ -40,8 +40,12 @@ const RatingForm = ({ isbn, setOpen }: { isbn: string, setOpen: Dispatch<SetStat
                     <p style={{ color: "red", fontSize: "12px" }}>{(errors as any).rating.message}</p>
                 )}
             </fieldset>
-            <Button type="submit">Votar</Button>
-            <Button onClick={() => { setOpen(prev => !prev); }} color="danger">Cerrar</Button>
+            <div className="w-full flex flex-row justify-end">
+                <Button onClick={() => { setOpen(prev => !prev); }} color="danger" variant="light">
+                    Cerrar
+                </Button>
+                <Button type="submit">Votar</Button>
+            </div>
         </form>
     );
 };

@@ -1,11 +1,12 @@
+import { Types } from "mongoose";
 import { IUserRepository } from "@/backend/Users/domain/IUserRepository";
 import { UserNotFoundException } from "@/backend/Users/domain/UserNotFoundException";
-import { Types } from "mongoose";
-import { IReadRepository } from "../domain/IReadRepository";
+import { IReadRepository } from "@/backend/Reads/domain/IReadRepository";
 import { Exception } from "@/backend/shared/domain/Errors/Exception";
-import { Read } from "../domain/Read";
+import { Read } from "@/backend/Reads/domain/Read";
 import { ReadModel } from "@/backend/shared/infrastructure/MongoDbClient";
 import { BookId } from "@/backend/Books/domain/BookIdVO";
+import { ReadBookStatusVO } from "@/backend/Reads/domain/ReadBookStatus";
 
 export class ReadService {
 
@@ -198,5 +199,9 @@ export class ReadService {
 
   async findOneByIsbn(isbn: string) {
     return this.readRepository.findOneByIsbn(new BookId(isbn))
+  }
+
+  async update(isbn: BookId, status: ReadBookStatusVO): Promise<void> {
+    return this.readRepository.update(isbn, status);
   }
 }
