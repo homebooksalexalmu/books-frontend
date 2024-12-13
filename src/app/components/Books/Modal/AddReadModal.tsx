@@ -77,7 +77,7 @@ const AddReadModal = ({ open, book, categories, handleClose }: { book: any; open
                                 }
                             </ModalBody>
                             <ModalFooter>
-                                <Button color="danger" variant="light" onPress={handleClose}>
+                                <Button onClick={handleClose} color="danger" variant="light">
                                     Cerrar
                                 </Button>
                                 {!isRead() || isRead() && !isOwnRead() ? (

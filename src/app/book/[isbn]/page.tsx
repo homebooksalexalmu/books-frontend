@@ -7,6 +7,7 @@ import BookImage from "@/app/components/Books/BookImage";
 import Rating from "@/app/components/Books/Rating";
 import PortraitModal from "@/app/components/Books/Modal/PortraitModal";
 import RatingModal from "@/app/components/Books/Modal/RatingModal";
+import ReadStatusModal from "@/app/components/Books/Modal/ReadStatusEditModal";
 
 
 const BookPage = async ({ params }: { params: { isbn: string } }) => {
@@ -15,11 +16,18 @@ const BookPage = async ({ params }: { params: { isbn: string } }) => {
     return (
         <div className="w-full min-h-screen h-auto px-3 py-1">
             <div className="w-full flex flex-row justify-between items-center p-3">
-                <div className="flex flex-row gap-2">
+                <div className="flex flex-row flex-wrap gap-2">
                     <PortraitModal isbn={params.isbn} />
                     <RatingModal isbn={params.isbn} />
+                    <ReadStatusModal isbn={params.isbn} />
+                    <Link className="flex md:hidden" href={`/book/${params.isbn}/edit`}>
+                        <Button color="primary" variant="bordered" size="sm" className="flex flex-row items-center -z-10">
+                            <i className="fa-solid fa-pencil"></i>
+                            Editar
+                        </Button>
+                    </Link>
                 </div>
-                <Link href={`/book/${params.isbn}/edit`}>
+                <Link className="hidden md:flex" href={`/book/${params.isbn}/edit`}>
                     <Button color="primary" variant="bordered" size="sm" className="flex flex-row items-center -z-10">
                         <i className="fa-solid fa-pencil"></i>
                         Editar

@@ -63,9 +63,11 @@ const PortraitModal = ({ isbn }: { isbn: string }) => {
                                 </label>
                             )}
                             <div className="w-full flex flex-row justify-end py-2 gap-2">
+                                <Button onClick={() => setOpen(prev => !prev)} color="danger" variant="light">
+                                    Cerrar
+                                </Button>
                                 <Button onClick={handleUpload}>Cambiar portada</Button>
-                                { previewUrl ? (<Button onClick={reset}>Resetear</Button>) : undefined }
-                                <Button onClick={() => { setOpen(prev => !prev) }}>Cerrar</Button>
+                                {previewUrl ? (<Button onClick={reset}>Resetear</Button>) : undefined}
                             </div>
                         </main>
                     )}
