@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     }
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
     await MongoClientFactory.createAndConnectClient();
-    return readFinderController.run();
+    return readFinderController.run(req);
 }

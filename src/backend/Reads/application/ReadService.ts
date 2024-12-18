@@ -41,7 +41,7 @@ export class ReadService {
     const user = criteria.reader ? await this.userRepository.findOneByAuth0Id(criteria.reader) : undefined;
     const criteriaMatch = {
       ...(criteria.status && criteria.status.length ? { status: criteria.status } : undefined),
-      ...(user ? { user: user._id } : undefined)
+      ...(user ? { user: user._id?.value } : undefined)
     };
     return ReadModel.aggregate([
       {

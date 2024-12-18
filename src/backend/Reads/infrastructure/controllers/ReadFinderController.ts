@@ -1,16 +1,22 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { ReadService } from "@/backend/Reads/application/ReadService";
 import { Exception } from "@/backend/shared/domain/Errors/Exception";
 import { BookId } from "@/backend/Books/domain/BookIdVO";
-import { ReadNotFoundException } from "../../domain/ReadNotFoundException";
+import { ReadNotFoundException } from "@/backend/Reads/domain/ReadNotFoundException";
 
 export class ReadFinderController {
 
     constructor(private readonly readCreator: ReadService) {}
 
-    async run() {
+    async run(req: NextRequest) {
         try {
-            const results = await this.readCreator.findAll({});
+            const searchParams = req.nextUrl.searchParams;
+            const query = {
+                reader: searchParams.get("reader"),
+                status: searchParams.get("status"),
+                categories: searchParams.get("categories"),
+            };
+            const results = await this.readCreator.findAll(query);
 
             return NextResponse.json({ reads: results }, { status: 200 })
         } catch (error: unknown) {
