@@ -15,7 +15,7 @@ export class BookFactory {
             authors: bookProps.attributes.authors.map((author: string) =>
                 author.includes(",")
                     ? author.split(",").reverse().join(" ").trim()
-                    : author),
+                    : author).map((author: string) => author.toUpperCase()),
             pages: bookProps.attributes.pages ?? DEFAULT_BOOK_PAGES,
             categories: [],
             publisher: bookProps.attributes.publisher,

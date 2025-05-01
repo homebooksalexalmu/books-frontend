@@ -53,3 +53,15 @@ export const updateBookPortrait = async (isbn: string, file: File | undefined) =
         console.error(error);
     }
 }
+
+export const getBookAuthors = async () => {
+    try {
+        const response = await axios.get(`/api/books/authors`);
+        return response.data;
+    } catch (error) {
+        if (error instanceof AxiosError && error.status === 504) {
+            throw new Error("Se agotó el tiempo. Vuelva a intentarlo más tarde.");
+        }
+        throw new Error("Internal server error");
+    }
+}

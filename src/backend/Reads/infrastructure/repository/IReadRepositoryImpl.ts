@@ -175,4 +175,41 @@ export class IReadRepositoryImpl implements IReadRepository {
         await ReadModel.updateOne({ book: isbn.value }, { $set: { status: status.value } });
     }
 
+    async findAllAuthors(): Promise<Array<string>> {
+        const result = await ReadModel.aggregate([
+            {
+              $lookup: {
+                from: "books",
+                localField: "book",
+                foreignField: "_id",
+                as: "bookData"
+              }
+            },
+            {
+              $unwind: "$bookData"
+            },
+            {
+              $replaceRoot: {
+                newRoot: "$bookData"
+              }
+            },
+            {
+              $unwind: "$authors"
+            },
+            {
+              $group: {
+                _id: null,
+                allAuthors: { $addToSet: "$authors" }
+              }
+            },
+            {
+              $project: {
+                _id: 0,
+                authors: "$allAuthors"
+              }
+            }
+        ]);
+        return result[0].authors;  
+    }
+
 }

@@ -9,5 +9,6 @@ export interface IReadRepository {
     find(fitlers: any): Promise<Read[]>;
     findOneByUserAndBook(user: string | Types.ObjectId, isbn: BookId): Promise<Nullable<Read>>
     findOneByIsbn(isbn: BookId): Promise<Nullable<Read>>;
+    findAllAuthors(): Promise<Array<string>>;
     update(isbn: BookId, status: ReadBookStatusVO): Promise<void>;
 }
