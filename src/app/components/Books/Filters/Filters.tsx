@@ -6,10 +6,11 @@ import { Dispatch, SetStateAction, ChangeEvent, FC } from "react";
 
 interface FiltersProps {
     categories: Array<{ _id: string; name: string }>;
+    authors: Array<string>;
     setFilters: Dispatch<SetStateAction<Record<string, any>>>;
 }
 
-const Filters: FC<FiltersProps> = ({ categories, setFilters }) => {
+const Filters: FC<FiltersProps> = ({ categories, authors, setFilters }) => {
     const { user, isLoading } = useUser();
 
     const updateFilter = (key: string, value: any) => {
@@ -27,6 +28,10 @@ const Filters: FC<FiltersProps> = ({ categories, setFilters }) => {
 
     const handleStatusChange = (evt: ChangeEvent<HTMLSelectElement>) => {
         updateFilter("status", evt.target.value);
+    };
+
+    const handleAuthorsChange = (evt: ChangeEvent<HTMLSelectElement>) => {
+        updateFilter("author", evt.target.value);
     };
 
     return (
@@ -56,6 +61,19 @@ const Filters: FC<FiltersProps> = ({ categories, setFilters }) => {
                     </SelectItem>
                 ))}
             </Select>
+            { authors && authors.length ? (
+                <Select
+                    label="Elige tu autor"
+                    className="w-full md:max-w-xs"
+                    onChange={handleAuthorsChange}
+                >
+                    {authors.map((author: string) => (
+                        <SelectItem key={author} value={author}>
+                            {author}
+                        </SelectItem>
+                    ))}
+                </Select>
+            ) : null }
         </>
     );
 };

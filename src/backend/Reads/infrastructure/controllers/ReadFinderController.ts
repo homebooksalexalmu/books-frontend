@@ -15,6 +15,7 @@ export class ReadFinderController {
                 reader: searchParams.get("reader"),
                 status: searchParams.get("status"),
                 categories: searchParams.get("categories"),
+                author: searchParams.get("author"),
             };
             const results = await this.readCreator.findAll(query);
 

@@ -79,11 +79,21 @@ export class ReadService {
         ? [
           {
             $match: {
-              "bookInfo.categories": { $in: [new Types.ObjectId(String(criteria.categories))] }
+              "bookInfo.categories": { $in: [new Types.ObjectId(String(criteria.categories))] },
+              "bookInfo.authors": criteria.author
             }
           }
         ]
         : []),
+        ...(criteria.author && criteria.author !== ""
+          ? [
+            {
+              $match: {
+                "bookInfo.authors": criteria.author
+              }
+            }
+          ]
+          : []),
       {
         $addFields: {
           isbn: "$_id",
@@ -204,4 +214,9 @@ export class ReadService {
   async update(isbn: BookId, status: ReadBookStatusVO): Promise<void> {
     return this.readRepository.update(isbn, status);
   }
+
+  async findAllAuthors(): Promise<Array<string>> {
+    const authors = await this.readRepository.findAllAuthors();
+    return authors.sort();
+}
 }
