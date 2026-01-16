@@ -25,8 +25,9 @@ const FilterWrapper = ({ setFilters }: { setFilters: Dispatch<SetStateAction<Rec
             fetchAuthors()]
         );
     }, []);
+    
     return (
-        <div className="w-full px-2 my-2 md:my-0 md:py-4 flex flex-col md:flex-row justify-end items-center gap-1 md:gap-4">
+        <div className="w-full p-4 md:py-6 md:px-0 bg-white rounded-lg md:rounded-none border-b md:border-b border-neutral-200 md:border-neutral-100 mb-4 md:mb-6">
             <Filters setFilters={setFilters} categories={categories} authors={authors} />
         </div>
     )

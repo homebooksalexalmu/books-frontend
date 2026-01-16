@@ -15,7 +15,7 @@ const RatingModal = ({ isbn }: { isbn: string }) => {
             <Modal hideCloseButton isOpen={open === true} className="max-h-[95vh] pb-24 md:pb-0 z-[9999]">
                 <ModalContent className="h-auto max-h-[95vh] lg:max-h-max overflow-auto">
                     {() => (
-                        <main className="p-4">
+                        <main className="p-4 z-[999]">
                             <RatingForm isbn={isbn} setOpen={setOpen} />
                         </main>
                     )}

@@ -1,4 +1,3 @@
-import { useUser } from "@auth0/nextjs-auth0/client";
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, User } from "@nextui-org/react";
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
@@ -6,9 +5,10 @@ import LogoutButton from "../components/auth/LogoutButton";
 import Link from "next/link";
 import LoadingPage from "../components/LoadingPage";
 import { Aside } from "../components/Aside";
+import { useAppUser } from "../contexts/UserContext";
 
 const DesktopLayout = ({ children }: { children: ReactNode }) => {
-    const { user, isLoading } = useUser();
+    const { user, isLoading } = useAppUser();
 
     if (!isLoading && !user) redirect("/");
 

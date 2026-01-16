@@ -1,61 +1,55 @@
+import { unstable_noStore } from "next/cache";
 import { getBookReadByIsbn } from "@/app/lib/reads";
-import { Button, Chip } from "@nextui-org/react";
-import BookPageUsersTabs from "@/app/components/Books/ReadsUserTabs";
-import BookDataTable from "@/app/components/Books/BookDataTable";
 import Link from "next/link";
-import BookImage from "@/app/components/Books/BookImage";
-import Rating from "@/app/components/Books/Rating";
-import PortraitModal from "@/app/components/Books/Modal/PortraitModal";
-import RatingModal from "@/app/components/Books/Modal/RatingModal";
-import ReadStatusModal from "@/app/components/Books/Modal/ReadStatusEditModal";
-
+import { Button } from "@nextui-org/react";
+import BookPageUsersTabs from "@/app/components/Books/ReadsUserTabs";
+import { BookHero } from "@/app/components/Books/BookHero";
+import { BookDetails } from "@/app/components/Books/BookDetails";
+import { BookSynopsis } from "@/app/components/Books/BookSynopsis";
 
 const BookPage = async ({ params }: { params: { isbn: string } }) => {
+    unstable_noStore();
     const book = await getBookReadByIsbn(params.isbn, true);
 
     return (
-        <div className="w-full min-h-screen h-auto px-3 py-1">
-            <div className="w-full flex flex-row justify-between items-center p-3">
-                <div className="flex flex-row flex-wrap gap-2">
-                    <PortraitModal isbn={params.isbn} />
-                    <RatingModal isbn={params.isbn} />
-                    <ReadStatusModal isbn={params.isbn} />
-                    <Link className="flex md:hidden" href={`/book/${params.isbn}/edit`}>
-                        <Button color="primary" variant="bordered" size="sm" className="flex flex-row items-center -z-10">
-                            <i className="fa-solid fa-pencil"></i>
-                            Editar
-                        </Button>
-                    </Link>
-                </div>
-                <Link className="hidden md:flex" href={`/book/${params.isbn}/edit`}>
-                    <Button color="primary" variant="bordered" size="sm" className="flex flex-row items-center -z-10">
-                        <i className="fa-solid fa-pencil"></i>
-                        Editar
-                    </Button>
-                </Link>
-            </div>
-            <div className="w-full flex flex-col md:flex-row justify-start items-start">
-                <BookImage book={book} />
-                <div className="w-full md:w-8/12 px-4 flex flex-col justify-start items-start gap-3">
-                    <h1 className="text-3xl">{book.title}</h1>
-                    <p className="text-md">{book.isbn}</p>
-                    <p className="text-tiny">{book.authors.map((author: string) => author.toUpperCase()).join(", ")}</p>
-                    <div className="w-full flex flex-col md:flex-row justify-start md:justify-between items-start md:items-center gap-2">
-                        <div className="w-full flex gap-2">{book.categories.map((category: { _id: string; name: string; }) => (<Chip color="primary" variant="bordered" key={category._id}>{category.name}</Chip>))}</div>
-                        <Rating rate={book.averageRating} />
-                    </div>
-                    <div className="w-full py-4">
-                        <BookDataTable data={{ format: book.format, pages: book.pages, publisher: book.publisher }} />
-                    </div>
+        <main className="w-full min-h-screen bg-neutral-50 pb-24">
+            {/* Hero Section */}
+            <BookHero book={book} isbn={params.isbn} />
+
+            {/* Main Content */}
+            <div className="w-full max-w-6xl mx-auto px-4 py-8">
+                {/* Details Grid */}
+                <section className="mb-8">
+                    <BookDetails
+                        publisher={book.publisher}
+                        pages={book.pages}
+                        format={book.format}
+                    />
+                </section>
+
+                {/* Synopsis */}
+                <section className="mb-8">
+                    <BookSynopsis description={book.description} />
+                </section>
+
+                {/* Users reads section */}
+                <section>
                     <BookPageUsersTabs usersRead={book.userReads} />
-                </div>
+                </section>
             </div>
-            <div className="w-full mt-10 px-3 pb-4">
-                <p className="text-lg underline font-bold">Descripción:</p>
-                <p className="text-sm">{book.description}</p>
-            </div>
-        </div>
-    )
-}
+
+            {/* Floating Action Button - Edit */}
+            <Link href={`/book/${params.isbn}/edit`} className="fixed bottom-24 left-6 z-[99] md:bottom-16 md:left-8">
+                <Button
+                    isIconOnly
+                    className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-primary-600 to-secondary-600 hover:shadow-2xl shadow-lg text-white rounded-full transition-all duration-300 hover:scale-110 active:scale-95"
+                    aria-label="Editar libro"
+                >
+                    <i className="fa-solid fa-pencil text-xl md:text-2xl"></i>
+                </Button>
+            </Link>
+        </main>
+    );
+};
 
 export default BookPage;

@@ -63,7 +63,7 @@ const ReadStatusModal = ({ isbn }: { isbn: string }) => {
                                         <Button onClick={() => setOpen(prev => !prev)} color="danger" variant="light">
                                             Cerrar
                                         </Button>
-                                        <Button type="submit" color="primary">
+                                        <Button type="submit" color="primary" className="text-gray-800">
                                             Cambiar estado
                                         </Button>
                                     </ModalFooter>
