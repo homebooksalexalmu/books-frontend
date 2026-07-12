@@ -15,8 +15,13 @@ export class CloudinaryService {
 
     async transformAndUploadAsset(fileName: string, assetUrl: string | undefined) {
         if (!assetUrl || !assetUrl.length) return DEFAULT_COVER_IMAGE;
-        const base64 = await this.transformAssetToBase64FromUrl(assetUrl);
-        return await this.upload(fileName, base64);
+        try {
+            const base64 = await this.transformAssetToBase64FromUrl(assetUrl);
+            return await this.upload(fileName, base64);
+        } catch (error) {
+            console.error(`Could not fetch/transform asset from ${assetUrl}, using default cover:`, error);
+            return DEFAULT_COVER_IMAGE;
+        }
     }
 
     async upload(fileName: string, base64: string) {
