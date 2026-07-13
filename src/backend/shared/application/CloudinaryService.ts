@@ -13,13 +13,17 @@ export class CloudinaryService {
         })
     }
 
+    // Note: this is used during book creation. We intentionally fall back to the
+    // default cover so an upload failure does not block the whole "alta" flow, but
+    // the failure is logged loudly so it can be detected/retried instead of passing
+    // silently. "No source image" is a legitimate fallback and is not treated as an error.
     async transformAndUploadAsset(fileName: string, assetUrl: string | undefined) {
         if (!assetUrl || !assetUrl.length) return DEFAULT_COVER_IMAGE;
         try {
             const base64 = await this.transformAssetToBase64FromUrl(assetUrl);
             return await this.upload(fileName, base64);
         } catch (error) {
-            console.error(`Could not fetch/transform asset from ${assetUrl}, using default cover:`, error);
+            console.error(`[Cloudinary] Cover upload FAILED for "${fileName}" (source: ${assetUrl}). Falling back to default cover — needs retry:`, error);
             return DEFAULT_COVER_IMAGE;
         }
     }
@@ -35,8 +39,10 @@ export class CloudinaryService {
 
             return uploadResult.secure_url;
         } catch (error) {
-            console.error(error);
-            return DEFAULT_COVER_IMAGE;
+            // Propagate: callers that upload an image on purpose (e.g. the portrait
+            // endpoint) must not receive a default cover as if the upload succeeded.
+            console.error(`[Cloudinary] Upload failed for "${fileName}":`, error);
+            throw new Cloudinaryxception(`Could not upload image "${fileName}" to Cloudinary`);
         }
     }
 

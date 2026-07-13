@@ -25,8 +25,12 @@ export const readSchema = new Schema({
             type: Date,
             required: true,
             default: () => new Date()
-        }    
+        }
 });
+
+readSchema.index({ user: 1 });
+readSchema.index({ book: 1 });
+readSchema.index({ book: 1, user: 1 }, { unique: true });
 
 export interface ReadProps extends Document {
     user: Types.ObjectId;

@@ -4,9 +4,12 @@ import { Nullable } from "@/backend/shared/domain/utils";
 import { Category } from "@/backend/Categories/domain/Category";
 import { CategoryModel } from "@/backend/shared/infrastructure/MongoDbClient";
 import { CategoryFactory } from "@/backend/Categories/domain/CategoryFactory";
+import { MongoCriteriaConverter } from "@/backend/shared/infrastructure/MongoCriteriaConverter";
 import { isValidObjectId } from "mongoose";
 
 export class ICategoryRepositoryImpl implements ICategoryRepository {
+
+    private readonly criteriaConverter = new MongoCriteriaConverter();
 
     async save(category: Category): Promise<void> {
         const categoryPrimitives = category.toPrimitives();
@@ -26,8 +29,12 @@ export class ICategoryRepositoryImpl implements ICategoryRepository {
     }
 
     async search(criteria: Criteria): Promise<Category[]> {
-        console.log(criteria);
-        throw new Error("Method not implemented.");
+        const query = this.criteriaConverter.convert(criteria);
+        const categories = await CategoryModel.find(query.filter)
+            .sort(query.sort)
+            .skip(query.skip)
+            .limit(query.limit);
+        return categories.map(category => CategoryFactory.create(category));
     }
 
 }

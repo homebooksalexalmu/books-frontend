@@ -1,4 +1,5 @@
 import { getBookReadByIsbn } from "@/app/lib/reads";
+import { notFound } from "next/navigation";
 import { Button, Chip } from "@nextui-org/react";
 import BookPageUsersTabs from "@/app/components/Books/ReadsUserTabs";
 import BookDataTable from "@/app/components/Books/BookDataTable";
@@ -11,7 +12,17 @@ import ReadStatusModal from "@/app/components/Books/Modal/ReadStatusEditModal";
 
 
 const BookPage = async ({ params }: { params: { isbn: string } }) => {
-    const book = await getBookReadByIsbn(params.isbn, true);
+    let book;
+    try {
+        book = await getBookReadByIsbn(params.isbn, true);
+    } catch (error) {
+        console.error(`Failed to fetch book ${params.isbn}:`, error);
+        throw new Error("No se ha podido cargar el libro. Inténtalo de nuevo más tarde.");
+    }
+
+    if (!book) {
+        notFound();
+    }
 
     return (
         <div className="w-full min-h-screen h-auto px-3 py-1">

@@ -15,6 +15,13 @@ const AddReadModal = ({ open, book, categories, handleClose }: { book: any; open
             status: "",
             categories: "",
         },
+        validate: (values) => {
+            const errors: { status?: string } = {};
+            if (!values.status) {
+                errors.status = "Debes elegir un estado";
+            }
+            return errors;
+        },
         onSubmit: async (values) => {
             if (!user || !user.sub) throw new Error("Cannot get user");
             const formattedCategories = values.categories.split(",");
@@ -37,7 +44,7 @@ const AddReadModal = ({ open, book, categories, handleClose }: { book: any; open
     return (
         <Modal hideCloseButton isOpen={open === true && book} className="max-h-[95vh] pb-24 md:pb-0 z-[9999]">
             <ModalContent className="h-auto max-h-[95vh] lg:max-h-max overflow-auto">
-                {(onClose) => (
+                {() => (
                     <>
                         <form onSubmit={formik.handleSubmit} className="w-full">
                             <ModalHeader className="flex flex-col gap-1">{book.title}</ModalHeader>
@@ -51,6 +58,8 @@ const AddReadModal = ({ open, book, categories, handleClose }: { book: any; open
                                                 className="max-w-xs"
                                                 onChange={(e) => formik.setFieldValue("status", e.target.value)}
                                                 value={formik.values.status}
+                                                isInvalid={!!formik.errors.status && formik.submitCount > 0}
+                                                errorMessage={formik.submitCount > 0 ? formik.errors.status : undefined}
                                             >
                                                 {Object.values(BookReadsStatus).map((status: string) => (
                                                     <SelectItem key={status}>
@@ -81,7 +90,7 @@ const AddReadModal = ({ open, book, categories, handleClose }: { book: any; open
                                     Cerrar
                                 </Button>
                                 {!isRead() || isRead() && !isOwnRead() ? (
-                                    <Button color="primary" type="submit" onPress={onClose}>
+                                    <Button color="primary" type="submit">
                                         Guardar
                                     </Button>
                                 ) : null}
