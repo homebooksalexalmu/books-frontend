@@ -24,8 +24,17 @@ Capas cubiertas:
 - **domain** — value objects, entidades y factories (lógica pura, sin infraestructura).
 - **application** — servicios probados contra **dobles de los puertos** (interfaces de repositorio con `vi.fn()`),
   sin conexión real a Mongo, Cloudinary ni red.
+- **infrastructure**
+  - **controllers** — se instancian con servicios mockeados; se comprueba el `NextResponse` (status + body) y el
+    mapeo de errores (`Exception` → su status; genérico → 500).
+  - **repositorios** — tests de **integración** (`*.integration.test.ts`) contra un MongoDB **en memoria**
+    (`mongodb-memory-server`). Ver `helpers/mongo.ts` (`useInMemoryMongo()`).
+  - `CloudinaryService` — con `cloudinary` y `axios` mockeados (`vi.mock`).
 
 `test/backend/shared/**` cubre el kernel compartido (`ValueObject`, el `Criteria` y su `MongoCriteriaConverter`).
+
+> Los tests de integración descargan un binario de `mongod` la primera vez (cacheado después) y añaden unos segundos
+> a la suite. Se ejecutan con `yarn test` como el resto.
 
 ## ObjectMother
 
@@ -42,6 +51,10 @@ sin dependencias externas.
 
 ## Bugs conocidos
 
-Los bugs de dominio aún sin corregir se documentan con `it.fails(...)` y una referencia a su issue
-(p.ej. la validación no-op de `RatingRate`, issue #29). Así la suite se mantiene en verde y el test pasará a ser
-una aserción normal en cuanto se arregle el bug.
+Los bugs aún sin corregir se documentan con un test que refleja el comportamiento **actual** (a veces con
+`it.fails(...)`) y una referencia a su issue, de modo que la suite queda en verde y sirve de red de seguridad:
+
+- `RatingRate` acepta cualquier nota — `it.fails` en `RatingRateVO.test.ts` (#29).
+- Los controllers `Category`/`Rating`/`User` filtran el error crudo al cliente (#39).
+- `UserCreatorController` no hace `await req.json()` (#28).
+- `save`/`findOne*` de repositorios revientan (o no persisten) en varios casos (#28, #33, #34).

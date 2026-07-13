@@ -45,6 +45,9 @@ yarn test:coverage  # tests + reporte de cobertura en ./coverage
   válidos (ObjectIds, ISBN-13...) se generan con `test/helpers/Random.ts` — sin dependencias externas (no faker).
 - Los tests de **domain** y **application** están **desacoplados**: no tocan Mongo/Cloudinary/red. Los servicios de
   aplicación se prueban contra **dobles de los puertos** (`vi.fn()` implementando las interfaces de repositorio).
+- **infrastructure**: los **controllers** se prueban con servicios mockeados (status + mapeo de errores del `NextResponse`);
+  los **repositorios** con tests de integración (`*.integration.test.ts`) sobre MongoDB en memoria
+  (`mongodb-memory-server`, ver `test/helpers/mongo.ts`); `CloudinaryService` con `cloudinary`/`axios` mockeados.
 - Bugs conocidos aún sin corregir se documentan con `it.fails(...)` referenciando su issue (p.ej. `RatingRate` → #29),
   de modo que la suite queda en verde y el test se convertirá en real al arreglar el bug.
 - `test/` está excluido del `tsconfig` de la app, así que `next build` no compila los tests.
