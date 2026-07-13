@@ -25,14 +25,30 @@ Reglas de negocio clave (confirmadas por el dueño):
 ## Comandos
 
 ```bash
-yarn dev      # servidor de desarrollo en el puerto 3001 (next dev -p 3001)
-yarn build    # next build
-yarn start    # next start
-yarn lint     # next lint
-npx tsc --noEmit   # typecheck (útil para verificar cambios; el proyecto no tiene tests)
+yarn dev            # servidor de desarrollo en el puerto 3001 (next dev -p 3001)
+yarn build          # next build
+yarn start          # next start
+yarn lint           # next lint
+npx tsc --noEmit    # typecheck
+yarn test           # tests unitarios (Vitest, una pasada)
+yarn test:watch     # Vitest en modo watch
+yarn test:coverage  # tests + reporte de cobertura en ./coverage
 ```
 
-No hay suite de tests. Para verificar cambios: `tsc --noEmit` + probar en local dando de alta / consultando libros.
+## Testing
+
+- **Vitest** (`vitest.config.ts`), entorno `node`, alias `@` → `src` (igual que `tsconfig`).
+- Los tests viven en **`test/`** (al nivel de `src/`) replicando la estructura del backend:
+  `test/Backend/<Módulo>/<capa>/<Sujeto>.test.ts` espeja `src/backend/<Módulo>/<capa>/<Sujeto>.ts`.
+  Nota: en `src` la carpeta es `backend` (minúscula); en tests es `test/Backend` (mayúscula, por convención de la issue).
+- **ObjectMother pattern**: cada entidad de dominio tiene su `XMother` (p.ej. `CategoryMother`, `RatingMother`,
+  `BookMother`, `ReadMother`, `UserMother`) con `primitives(overrides)` y `create(overrides)`. Los datos aleatorios
+  válidos (ObjectIds, ISBN-13...) se generan con `test/helpers/Random.ts` — sin dependencias externas (no faker).
+- Los tests de **domain** y **application** están **desacoplados**: no tocan Mongo/Cloudinary/red. Los servicios de
+  aplicación se prueban contra **dobles de los puertos** (`vi.fn()` implementando las interfaces de repositorio).
+- Bugs conocidos aún sin corregir se documentan con `it.fails(...)` referenciando su issue (p.ej. `RatingRate` → #29),
+  de modo que la suite queda en verde y el test se convertirá en real al arreglar el bug.
+- `test/` está excluido del `tsconfig` de la app, así que `next build` no compila los tests.
 
 ## Arquitectura
 
