@@ -35,14 +35,14 @@ export class Category {
     static fromPrimitives(plainData: {
         _id: string;
         name: string;
-        slug: CategorySlug;
+        slug: string;
         createdAt: Date;
         updatedAt: Date;
     }): Category {
         return new Category({
             _id: new CategoryId(plainData._id),
             name: plainData.name,
-            slug: new CategorySlug(plainData.name),
+            slug: plainData.slug ? new CategorySlug(plainData.slug) : new CategorySlug(plainData.name),
             createdAt: plainData.createdAt,
             updatedAt: plainData.updatedAt,
         });

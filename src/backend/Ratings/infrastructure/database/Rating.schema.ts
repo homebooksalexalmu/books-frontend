@@ -22,8 +22,11 @@ export const ratingSchema = new Schema({
             type: Date,
             required: true,
             default: () => new Date()
-        }    
+        }
 });
+
+ratingSchema.index({ isbn: 1 });
+ratingSchema.index({ isbn: 1, user: 1 }, { unique: true });
 
 export interface RatingProps extends Document {
     _id: string;

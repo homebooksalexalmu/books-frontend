@@ -3,6 +3,7 @@ import { useUser } from '@auth0/nextjs-auth0/client';
 import { Button } from '@nextui-org/react';
 import React, { Dispatch, SetStateAction } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 const RatingForm = ({ isbn, setOpen }: { isbn: string, setOpen: Dispatch<SetStateAction<boolean>> }) => {
     const { user, isLoading } = useUser();
@@ -12,12 +13,22 @@ const RatingForm = ({ isbn, setOpen }: { isbn: string, setOpen: Dispatch<SetStat
         formState: { errors }
     } = useForm();
 
-    if (!user && isLoading) return (<div className="w-full flex flex-row justify-center"><p>Loading</p></div>)
+    if (isLoading) return (<div className="w-full flex flex-row justify-center"><p>Loading</p></div>)
 
     const submitHandler = async (data: any) => {
         const userId = user?.sub;
-        await updateBookRating(isbn, Number(data.rating), userId);
-        setOpen(prev => !prev);
+        if (!userId) {
+            toast.error("Debes iniciar sesión para valorar el libro.");
+            return;
+        }
+        try {
+            await updateBookRating(isbn, Number(data.rating), userId);
+            toast.success("¡Gracias por tu valoración!");
+            setOpen(prev => !prev);
+        } catch (error) {
+            console.error(error);
+            toast.error("No se ha podido guardar la valoración. Inténtalo de nuevo.");
+        }
     };
 
     return (

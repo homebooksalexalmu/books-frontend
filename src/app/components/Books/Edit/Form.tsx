@@ -34,8 +34,6 @@ const BookEditForm = ({ book }: { book: any }) => {
 
     const onSubmit: SubmitHandler<any> = async (data) => {
         try {
-            const pages = parseInt(data.pages, 10);
-            data.pages = isNaN(pages) ? 0 : pages;
             await updateBook(data._id, data);
             router.push("/");
         } catch (err: any) {
@@ -181,7 +179,12 @@ const BookEditForm = ({ book }: { book: any }) => {
                         defaultValue={book.pages}
                         className="w-full"
                         type="number"
-                        {...register("pages")}
+                        {...register("pages", {
+                            required: "El número de páginas es obligatorio",
+                            valueAsNumber: true,
+                            min: { value: 1, message: "Debe ser un número mayor que 0" },
+                            validate: (value) => !isNaN(value) || "Debe ser un número válido",
+                        })}
                     />
                     {errors.pages && (
                         <p className="text-red-500 text-sm mt-1">

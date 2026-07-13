@@ -41,6 +41,9 @@ export const userSchema = new Schema({
     }
 });
 
+userSchema.index({ auth0Id: 1 }, { unique: true });
+userSchema.index({ email: 1 }, { unique: true });
+
 export interface UserProps extends Document {
     _id: string;
     name: string;
