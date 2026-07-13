@@ -12,11 +12,11 @@ yarn test:coverage  # con reporte de cobertura (./coverage)
 
 ## Estructura
 
-`test/Backend/**` replica `src/backend/**`. Cada fichero de test espeja el módulo bajo prueba:
+`test/backend/**` replica `src/backend/**`. Cada fichero de test espeja el módulo bajo prueba:
 
 ```
 src/backend/Categories/domain/CategorySlug.ts
-test/Backend/Categories/domain/CategorySlug.test.ts
+test/backend/Categories/domain/CategorySlug.test.ts
 ```
 
 Capas cubiertas:
@@ -25,7 +25,7 @@ Capas cubiertas:
 - **application** — servicios probados contra **dobles de los puertos** (interfaces de repositorio con `vi.fn()`),
   sin conexión real a Mongo, Cloudinary ni red.
 
-`test/Backend/shared/**` cubre el kernel compartido (`ValueObject`, el `Criteria` y su `MongoCriteriaConverter`).
+`test/backend/shared/**` cubre el kernel compartido (`ValueObject`, el `Criteria` y su `MongoCriteriaConverter`).
 
 ## ObjectMother
 

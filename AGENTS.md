@@ -39,8 +39,7 @@ yarn test:coverage  # tests + reporte de cobertura en ./coverage
 
 - **Vitest** (`vitest.config.ts`), entorno `node`, alias `@` → `src` (igual que `tsconfig`).
 - Los tests viven en **`test/`** (al nivel de `src/`) replicando la estructura del backend:
-  `test/Backend/<Módulo>/<capa>/<Sujeto>.test.ts` espeja `src/backend/<Módulo>/<capa>/<Sujeto>.ts`.
-  Nota: en `src` la carpeta es `backend` (minúscula); en tests es `test/Backend` (mayúscula, por convención de la issue).
+  `test/backend/<Módulo>/<capa>/<Sujeto>.test.ts` espeja `src/backend/<Módulo>/<capa>/<Sujeto>.ts`.
 - **ObjectMother pattern**: cada entidad de dominio tiene su `XMother` (p.ej. `CategoryMother`, `RatingMother`,
   `BookMother`, `ReadMother`, `UserMother`) con `primitives(overrides)` y `create(overrides)`. Los datos aleatorios
   válidos (ObjectIds, ISBN-13...) se generan con `test/helpers/Random.ts` — sin dependencias externas (no faker).
