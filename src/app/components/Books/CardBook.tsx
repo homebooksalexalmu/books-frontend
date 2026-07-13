@@ -3,7 +3,7 @@ import Link from "next/link";
 import Rating from "./Rating";
 
 const CardBook = ({ read }: { read: any }) => {
-    const usersImage = read.userReads.map((userRead: any) => userRead.user.picture);
+    const userReads = read.userReads ?? [];
     return (
         <Link href={`/book/${read.isbn}`} className="w-full">
             <Card className="col-span-12 sm:col-span-4 w-full aspect-[9/14] shadow-xl group overflow-hidden">
@@ -11,10 +11,16 @@ const CardBook = ({ read }: { read: any }) => {
                     <h4 className="text-white font-medium text-large line-clamp-3">{read.title}</h4>
                     <div className="w-full flex flex-row justify-between items-center">
                         {
-                            usersImage ? (
+                            userReads.length ? (
                                 <div>
                                     <AvatarGroup isBordered>
-                                        {usersImage.map((image: string) => (<Avatar src={image} key={image} className="w-6 h-6 text-tiny" />))}
+                                        {userReads.map((userRead: any, index: number) => (
+                                            <Avatar
+                                                src={userRead.user?.picture}
+                                                key={userRead.user?._id ?? userRead._id ?? index}
+                                                className="w-6 h-6 text-tiny"
+                                            />
+                                        ))}
                                     </AvatarGroup>
                                 </div>
                             ) : null
