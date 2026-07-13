@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import CardBook from "./CardBook";
 import FilterWrapper from "./Filters/FilterWrapper";
 
-const fetchReads = async (params?: Record<string, any>) => {
+const fetchReads = async (params?: Record<string, any>, signal?: AbortSignal) => {
     const searchParams = new URLSearchParams();
     if (params) {
 
@@ -14,7 +14,7 @@ const fetchReads = async (params?: Record<string, any>) => {
         }
     }
 
-    const res = await fetch(`/api/reads${searchParams.size ? `?${searchParams.toString()}` : ""}`);
+    const res = await fetch(`/api/reads${searchParams.size ? `?${searchParams.toString()}` : ""}`, { signal });
     const response = await res.json();
     return response.reads;
 }
@@ -24,19 +24,27 @@ const GridBooks = () => {
     const [filters, setFilters] = useState<Record<string, any>>({});
 
     useEffect(() => {
-        const fetch = async () => {
-            const reads = await fetchReads();
-            setReads(reads);
-        }
-        fetch();
-    }, []);
+        // Single source of truth for loading reads. `filters` starts as `{}`, so this
+        // effect already covers the initial mount — no separate `[]` effect needed
+        // (that duplicated the request and raced on slow networks). The AbortController
+        // cancels the in-flight request when `filters` changes or the component unmounts,
+        // so a stale response can never overwrite a fresher one.
+        const controller = new AbortController();
 
-    useEffect(() => {
-        const fetch = async () => {
-            const reads = await fetchReads(filters);
-            setReads(reads);
-        }
-        fetch();
+        const load = async () => {
+            try {
+                const reads = await fetchReads(filters, controller.signal);
+                setReads(reads);
+            } catch (error) {
+                if (!controller.signal.aborted) {
+                    console.error(error);
+                }
+            }
+        };
+
+        load();
+
+        return () => controller.abort();
     }, [filters]);
 
     return (
